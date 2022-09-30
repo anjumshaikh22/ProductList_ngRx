@@ -1,0 +1,53 @@
+<div class="dialog-content-wrapper custom-dialog w-900">
+    <mat-toolbar>
+      <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+        <span>Create Product</span>
+        <button mat-icon-button (click)="cancel()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar>
+      <form *ngIf="productForm" [formGroup]="productForm">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" fxFlexFill fxLayoutAlign="start space-between">
+            <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+              <input type="text" matInput class="form-control"
+                placeholder="User id" formControlName="uid">  
+            </mat-form-field>
+            <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+              <input type="text" matInput class="form-control"
+                placeholder="Blend Name" formControlName="blend_name" required>  
+                <mat-error *ngIf="productForm.controls.blend_name.invalid">
+                    <app-validation [control]="productForm.controls.blend_name"></app-validation>
+                  </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+              <input type="text" matInput class="form-control"
+                placeholder="origin" formControlName="origin">  
+            </mat-form-field>
+          </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" fxFlexFill fxLayoutAlign="start space-between">
+          <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+            <input type="text" matInput class="form-control"
+              placeholder="variety" formControlName="variety">  
+          </mat-form-field>
+          <mat-form-field fxFlex="66" fxFlexAlign="start stretch" fxFlex.xs="50">
+            <textarea matInput placeholder="note"  formControlName="note"></textarea>
+        </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" fxFlexFill fxLayoutAlign="start space-between">
+            <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+              <input type="text" matInput class="form-control"
+                placeholder="intensifier"  formControlName="intensifier">  
+            </mat-form-field>
+          </div>
+      </form>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+      <button mat-button color="primary" class="mr-8" (click)="cancel()">
+       Cancel</button>
+      <button mat-button color="accent" class="mr-8" (click)="save()">
+       Save</button>
+    </div>
+  </div>
+  

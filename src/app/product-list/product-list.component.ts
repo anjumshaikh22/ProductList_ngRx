@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,13 +12,15 @@ import { getProducts } from '../store/actions/product.action';
 import { productState } from '../store/reducers/product.reducers';
 import { productSelector } from '../store/selector/product.selector';
 import { Product } from '../models/product.model';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ProductCreateComponent } from '../product-create/product-create.component';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit, AfterViewInit {
+export class ProductListComponent implements OnInit, AfterViewInit, AfterViewChecked {
   busyMessage = 'Loading...';
   busy: Subscription | undefined;
   pageSubscription: Subscription| undefined;
@@ -62,7 +64,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private store: Store<productState>) { 
+    private store: Store<productState>,
+    private matDialog: MatDialog,
+    private cdRef: ChangeDetectorRef,) { 
   
   }
   
@@ -140,6 +144,28 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  openCreateProductDialog() {
+    let config = new MatDialogConfig();
+    config = {
+      width: '100vw',
+      panelClass: 'full-screen-modal',
+      disableClose: true
+    };
+    const emailDialogRef = this.matDialog.open(ProductCreateComponent, config);
+
+    emailDialogRef.afterClosed().subscribe((productForm) => {
+      if (productForm) {
+        const productFormObj = productForm.getRawValue();
+
+      }
+
+    });
+  }
+
+  ngAfterViewChecked() {
+    this.cdRef.detectChanges();
   }
 
 }

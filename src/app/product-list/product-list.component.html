@@ -1,23 +1,25 @@
-<div class="layout-page page-layout carded fullwidth inner-scroll">
-    <div class="center">
-        <div  fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+<div>
+    <div class="center" >
+        <div   fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
             fxLayoutAlign.gt-xs="space-between center">
-            <div fxFlex fxLayout="row" fxLayoutAlign="center">
+            <div fxFlex="81" fxLayout="row" fxLayoutAlign="start">
                     <div  fxFlex fxLayout="row">
-                        <h1>Product List</h1>
+                        <h3>Product List</h3>
                     </div>
             </div>
-            <div fxFlex fxLayout="row" fxLayoutAlign="end">
-                <div class="search-wrapper">
-                    <div  fxFlex fxLayout="row">
-                        <input class="searchInput" (keyup)="applyFilter($event)" [formControl]="filter" placeholder="search">
-                    </div>
+            <div fxFlex="14" fxLayout="row" fxLayoutAlign="end">
+                <button mat-raised-button color="primary" (click)="openCreateProductDialog()">Add Product</button>
+           </div>
+            <div fxFlex="14" fxLayout="row" fxLayoutAlign="center">
+                <div class="search-wrapper">    
+                    <input class="searchInput" (keyup)="applyFilter($event)" [formControl]="filter" placeholder="search">
                 </div>
             </div>
+           
         </div>
         
         <mat-divider></mat-divider>
-        <div class=" example-container mat-elevation-z8">
+        <div class="example-container mat-elevation-z8">
             <table class="productListTbl" mat-table [dataSource]="dataSource" matSort>
 
                 <!-- ID Column -->

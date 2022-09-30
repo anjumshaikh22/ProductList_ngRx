@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProductListComponent } from './product-list/product-list.component';
 
 // material components
@@ -15,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatDialogModule} from '@angular/material/dialog';
 
 //All modules
 import { ServicesModule } from '../app/services/services.module'
@@ -27,12 +29,16 @@ import { productReducer } from './store/reducers/product.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects'
-import { ProductEffect } from './store/effects/product.effect'
+import { ProductEffect } from './store/effects/product.effect';
+import { ProductCreateComponent } from './product-create/product-create.component';
+import { ValidationComponent } from './validation/validation.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductListComponent
+    ProductListComponent,
+    ProductCreateComponent,
+    ValidationComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +46,7 @@ import { ProductEffect } from './store/effects/product.effect'
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+    FlexLayoutModule,
     MatDividerModule,
     MatFormFieldModule,
     MatToolbarModule,
@@ -48,6 +55,7 @@ import { ProductEffect } from './store/effects/product.effect'
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
+    MatDialogModule,
     ServicesModule,
     StoreModule.forRoot({products: productReducer}),
     StoreDevtoolsModule.instrument({ 
@@ -55,6 +63,9 @@ import { ProductEffect } from './store/effects/product.effect'
       logOnly: environment.production,
     }),
     EffectsModule.forRoot([ProductEffect])
+  ],
+  entryComponents: [
+    ProductCreateComponent
   ],
   providers: [
     GatwayService,
