@@ -6,5 +6,13 @@ export const getProducts = createAction('[Product] Get Product',
 
 export const getProductListSuccess =  createAction('[Product] Get Product List Success',
  (products: ReadonlyArray<Product>) => ({products})
-/* props<{products: ReadonlyArray<Product>}>()*/
 );
+
+export const addProduct = createAction('[Product] Add new Product',
+(newProduct: Product) => ({newProduct}));
+
+/* export const addProductSuccess = createAction('[Product] Add Product Success',
+(newProduct: Product) => ({newProduct}));
+
+export const getProductDetails = createAction('[Product] View Product Detail',
+(productDetail: Product) => ({productDetail})); */

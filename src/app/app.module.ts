@@ -31,14 +31,16 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects'
 import { ProductEffect } from './store/effects/product.effect';
 import { ProductCreateComponent } from './product-create/product-create.component';
-import { ValidationComponent } from './validation/validation.component'
+import { ValidationComponent } from './validation/validation.component';
+import { ProductViewComponent } from './product-view/product-view.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductListComponent,
     ProductCreateComponent,
-    ValidationComponent
+    ValidationComponent,
+    ProductViewComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,8 @@ import { ValidationComponent } from './validation/validation.component'
     EffectsModule.forRoot([ProductEffect])
   ],
   entryComponents: [
-    ProductCreateComponent
+    ProductCreateComponent,
+    ProductViewComponent
   ],
   providers: [
     GatwayService,

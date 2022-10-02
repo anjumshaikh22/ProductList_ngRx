@@ -1,4 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import {
+   Component, OnInit, ViewChild, AfterViewInit, AfterViewChecked, ChangeDetectorRef, 
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,27 +11,29 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { getProducts } from '../store/actions/product.action';
+import { getProducts, addProduct } from '../store/actions/product.action';
 import { productState } from '../store/reducers/product.reducers';
 import { productSelector } from '../store/selector/product.selector';
 import { Product } from '../models/product.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ProductCreateComponent } from '../product-create/product-create.component';
+import { ProductViewComponent } from '../product-view/product-view.component';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  styleUrls: ['./product-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductListComponent implements OnInit, AfterViewInit, AfterViewChecked {
   busyMessage = 'Loading...';
   busy: Subscription | undefined;
-  pageSubscription: Subscription| undefined;
+  pageSubscription: Subscription | undefined;
   filter = new FormControl('');
   pageSizeOptions: any = [10, 50];
   defaultPageSize = 10;
   totalCount = '50';
-  columns: any[] = [  {
+  columns: any[] = [{
     column: 'id', show: true, default: true,
     displayName: 'Id'
   },
@@ -66,14 +71,17 @@ export class ProductListComponent implements OnInit, AfterViewInit, AfterViewChe
     private productService: ProductService,
     private store: Store<productState>,
     private matDialog: MatDialog,
-    private cdRef: ChangeDetectorRef,) { 
-  
+    private cdRef: ChangeDetectorRef) {
+     
+      // Bonus Point 2: Used to avoid change detection in Initial stage
+      this.cdRef.detach();
   }
-  
+
 
   ngOnInit(): void {
     this.resetDataSource();
     this.changeDisplayColumn();
+   
   }
 
   ngAfterViewInit(): void {
@@ -81,62 +89,33 @@ export class ProductListComponent implements OnInit, AfterViewInit, AfterViewChe
   }
 
   getProductList() {
+    // This dispatch() method of store is used to invoke getProducts() of Action by passing totalCount as parameter
     this.store.dispatch(getProducts(this.totalCount));
-    this.store.select(productSelector).subscribe((arr) => {
-      console.log("fromStore.getAllEmp: " + arr);
-      this.productList = arr.concat();
-      console.log("dataSource: " + this.productList.length);
+
+     // Bonus Point 1: Here Used select() method of store to used selector to fetch data from store and display on DOM
+    this.store.select(productSelector).subscribe((productListArray) => {
+      console.log("fromStore.getAllEmp: " + productListArray);
+      
+      // Here we don't have an API to add product so I referred concat method to add immutable array just for change detect in productList
+      this.productList = productListArray.concat();
       this.resetDataSource();
-    }); 
-    
-   /* this.productList = [
-      {
-       id : 7416, 
-       uid: "51f7aa23-fb27-4a07-8ceb-52eef6f6292f",
-       blend_name: "Melty Enlightenment",
-       origin: "Kigeyo Washing Station, Rwanda",
-       variety: "Pacas",
-       notes: "juicy, coating, banana, raspberry, potato defect!",
-       intensifier: "faint"
-    },
-    {
-       id: 4380,
-       uid: "3eae3950-bd7e-4029-a42d-3dce2c4b7419",
-       blend_name: "Goodbye Cowboy",
-      origin: "Boquete, Panama",
-      variety: "Dilla",
-      notes: "pointed, slick, marshmallow, rubber, hay",
-      intensifier: "delicate"
-    },
-    {
-      id: 3404,
-      uid: "bfb8e7a7-dda3-48d1-91cf-b2d4285780c0",
-      blend_name: "Goodbye Coffee",
-      origin: "Santander, Colombia",
-      variety: "S.4",
-      notes: "rounded, silky, fresh wood, walnut, plum",
-      intensifier: "unbalanced"
-    },
-    {
-      id: 5360,
-      uid: "7eca9d3f-a8b2-4d66-a678-47d67d98b035",
-      blend_name: "Wake-up Volcano",
-      origin: "San Luis Potosi, Mexico",
-      variety:  "Villalobos",
-      notes: "vibrant, syrupy, papaya, lemongrass, molasses",
-      intensifier: "soft"
-    }];*/
+
+      // Bonus Point 2: Used change detection method markForCheck() to notify angular to mark change
+      this.cdRef.markForCheck();
+    });
   }
 
   resetDataSource() {
-    this.dataSource = new MatTableDataSource (this.productList);
+    this.dataSource = new MatTableDataSource(this.productList);
     this.dataSource.paginator = this.paginator;
   }
 
+  // Method to add array columns to mat-table.
   changeDisplayColumn() {
     this.displayedColumns = _.map(_.filter(this.columns, 'show'), 'column');
   }
 
+  // Method to filter the Mat-table data
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -146,6 +125,7 @@ export class ProductListComponent implements OnInit, AfterViewInit, AfterViewChe
     }
   }
 
+  // Method to open 'Create-Product' dialog box, set cofiguration.
   openCreateProductDialog() {
     let config = new MatDialogConfig();
     config = {
@@ -155,15 +135,32 @@ export class ProductListComponent implements OnInit, AfterViewInit, AfterViewChe
     };
     const emailDialogRef = this.matDialog.open(ProductCreateComponent, config);
 
-    emailDialogRef.afterClosed().subscribe((productForm) => {
-      if (productForm) {
-        const productFormObj = productForm.getRawValue();
-
-      }
+    emailDialogRef.afterClosed().subscribe((productFormOBJ) => {
+     // this.store.dispatch(addProduct(productFormOBJ));
+     this.productList = this.productList.concat(productFormOBJ);
+     this.resetDataSource()
 
     });
   }
 
+// Bonus Point 3: Method to display 'View-Product' dialog box, set cofiguration.
+  viewProduct(productDetail: Product) {
+    let config = new MatDialogConfig();
+    config = {
+      data: {
+        productDetails: productDetail
+      },
+      width: '100vw',
+      panelClass: 'full-screen-modal',
+      disableClose: true
+    };
+    const emailDialogRef = this.matDialog.open(ProductViewComponent, config);
+
+    emailDialogRef.afterClosed().subscribe((productDetail) => {
+    });
+  }
+ 
+  // Bonus Point 2: Detect Changes whenever this method after view check
   ngAfterViewChecked() {
     this.cdRef.detectChanges();
   }

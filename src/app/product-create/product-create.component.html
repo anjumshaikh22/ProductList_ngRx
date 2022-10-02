@@ -12,7 +12,10 @@
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" fxFlexFill fxLayoutAlign="start space-between">
             <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
               <input type="text" matInput class="form-control"
-                placeholder="User id" formControlName="uid">  
+                placeholder="User id" formControlName="uid">
+                <mat-error *ngIf="productForm.controls.uid.invalid">
+                  <app-validation [control]="productForm.controls.uid"></app-validation>
+                </mat-error>
             </mat-form-field>
             <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
               <input type="text" matInput class="form-control"
@@ -23,16 +26,22 @@
             </mat-form-field>
             <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
               <input type="text" matInput class="form-control"
-                placeholder="origin" formControlName="origin">  
+                placeholder="origin" formControlName="origin">
+                <mat-error *ngIf="productForm.controls.origin.invalid">
+                  <app-validation [control]="productForm.controls.origin"></app-validation>
+                </mat-error>
             </mat-form-field>
           </div>
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" fxFlexFill fxLayoutAlign="start space-between">
           <mat-form-field fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
             <input type="text" matInput class="form-control"
-              placeholder="variety" formControlName="variety">  
+              placeholder="variety" formControlName="variety">
+              <mat-error *ngIf="productForm.controls.variety.invalid">
+                <app-validation [control]="productForm.controls.variety"></app-validation>
+              </mat-error>  
           </mat-form-field>
           <mat-form-field fxFlex="66" fxFlexAlign="start stretch" fxFlex.xs="50">
-            <textarea matInput placeholder="note"  formControlName="note"></textarea>
+            <textarea matInput placeholder="note"  formControlName="notes"></textarea>
         </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" fxFlexFill fxLayoutAlign="start space-between">
@@ -40,6 +49,9 @@
               <input type="text" matInput class="form-control"
                 placeholder="intensifier"  formControlName="intensifier">  
             </mat-form-field>
+            <mat-error *ngIf="productForm.controls.intensifier.invalid">
+              <app-validation [control]="productForm.controls.intensifier"></app-validation>
+            </mat-error>
           </div>
       </form>
     </div>

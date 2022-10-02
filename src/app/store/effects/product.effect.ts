@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { EmptyError } from 'rxjs';
-import { catchError, exhaustMap, map } from 'rxjs/operators';
+import { catchError, concatMap, exhaustMap, map, tap } from 'rxjs/operators';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from '../../services/product/product.service';
-import { getProducts, getProductListSuccess } from '../actions/product.action';
+import { 
+  getProducts, getProductListSuccess, addProduct 
+} from '../actions/product.action';
 
 @Injectable()
 export class ProductEffect {
@@ -17,6 +19,18 @@ export class ProductEffect {
     ))
     )
   );
+
+/*   addProduct$ = createEffect(() =>
+  this.action$.pipe(
+    ofType(addProduct),
+    tap((product: any) => console.log(product)),
+    concatMap(({ product }) =>
+      this.productService.addProduct(product).pipe(
+        map((newProduct) => addProductSuccess(newProduct))
+      )
+    )
+  )
+); */
 
   constructor(
     private action$: Actions,

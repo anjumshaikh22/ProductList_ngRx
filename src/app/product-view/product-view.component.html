@@ -1,0 +1,71 @@
+<div class="dialog-content-wrapper custom-dialog">
+    <mat-toolbar>
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span>Create Product</span>
+            <button mat-icon-button (click)="cancel()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-16 m-0" fusePerfectScrollbar>
+
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+                <label>
+                    <strong class="pr-8">User Id:</strong>
+                    <span class="mat-body-1">
+                        {{productDetails.id || 'NA'}}
+                    </span>
+                </label>
+            </div>
+            <div fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+                <label>
+                    <strong class="pr-8">Blend Name:</strong>
+                    <span class="mat-body-1">
+                        {{productDetails.blend_name || 'NA'}}
+                    </span>
+                </label>
+            </div>
+            <div fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+                <label>
+                    <strong class="pr-8">Origin:</strong>
+                    <span class="mat-body-1">
+                        {{productDetails.origin || 'NA'}}
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+            <div fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+                <label>
+                    <strong class="pr-8">Variety:</strong>
+                    <span class="mat-body-1">
+                        {{productDetails.variety || 'NA'}}
+                    </span>
+                </label>
+            </div>
+            <div fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+                <label>
+                    <strong class="pr-8">notes:</strong>
+                    <span class="mat-body-1">
+                        {{productDetails.notes || 'NA'}}
+                    </span>
+                </label>
+            </div>
+            <div fxFlex="33" fxFlexAlign="start stretch" fxFlex.xs="50">
+                <label>
+                    <strong class="pr-8">intensifier:</strong>
+                    <span class="mat-body-1">
+                        {{productDetails.intensifier || 'NA'}}
+                    </span>
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+    <button mat-button color="primary" class="mr-8" (click)="cancel()">
+        Cancel</button>
+     </div>
+</div>
