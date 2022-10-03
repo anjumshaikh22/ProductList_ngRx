@@ -20,6 +20,7 @@ table th {
     color: rgba(0, 0, 0, 0.87) !important;
     font-weight: bold;
     background-color: #00b4ff3d; 
+    font-size: 16px !important;
 }
 
 table tbody tr td {
